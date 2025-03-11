@@ -13,10 +13,10 @@
     "plugin"
   ],
   "dependencies": {
-    "@ckeditor/ckeditor5-core": "^17.0.0",
-    "@ckeditor/ckeditor5-image": "^17.0.0",
-    "@ckeditor/ckeditor5-ui": "^17.0.0",
-    "@ckeditor/ckeditor5-utils": "^17.0.0"
+    "@ckeditor/ckeditor5-core": "^44.2.1",
+    "@ckeditor/ckeditor5-image": "^44.2.1",
+    "@ckeditor/ckeditor5-ui": "^44.2.1",
+    "@ckeditor/ckeditor5-utils": "^43.0.1"
   },
   "repository": {
     "type": "git",
