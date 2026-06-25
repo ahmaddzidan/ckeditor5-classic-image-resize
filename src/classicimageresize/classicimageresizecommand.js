@@ -13,6 +13,7 @@ export default class ClassicImageResizeCommand extends Command {
 
     this.value = null;
     this.isLockedAspectRatio = false;
+    this._aspectRatio = null;
   }
 
   init() {
@@ -25,7 +26,7 @@ export default class ClassicImageResizeCommand extends Command {
   refresh() {
     const element = this.editor.model.document.selection.getSelectedElement();
     const imageUtils = this.editor.plugins.get("ImageUtils");
-    this.isEnabled = imageUtils.isImage(element);
+    this.isEnabled = !!element && imageUtils.isImage(element);
 
     let height = this.getHeight(element);
     let width = this.getWidth(element);
@@ -79,24 +80,39 @@ export default class ClassicImageResizeCommand extends Command {
   execute(options) {
     const model = this.editor.model;
     const imageElement = model.document.selection.getSelectedElement();
+
+    if (!imageElement) {
+      return;
+    }
+
     if (options.lockAspectRatio !== undefined) {
+      const wasLocked = this.isLockedAspectRatio;
       this.isLockedAspectRatio = options.lockAspectRatio;
+
+      // Capture the ratio at the moment the lock is turned on.
+      if (!wasLocked && this.isLockedAspectRatio) {
+        this._captureAspectRatio(imageElement);
+      }
     }
 
     model.change((writer) => {
       if (options.width) {
         writer.setAttribute("width", options.width, imageElement);
+
+        // Compute proportional height when the lock is active.
+        if (this.isLockedAspectRatio && this._aspectRatio !== null) {
+          const newHeight = Math.round(
+            parseFloat(options.width) * this._aspectRatio,
+          );
+          writer.setAttribute("height", String(newHeight), imageElement);
+        }
       }
 
       writer.setAttribute(
         "isLockedAspectRatio",
         this.isLockedAspectRatio,
-        imageElement
+        imageElement,
       );
-
-      if (this.isLockedAspectRatio) {
-        writer.setAttribute("height", null, imageElement);
-      }
 
       if (!this.isLockedAspectRatio && options.height) {
         writer.setAttribute("height", options.height, imageElement);
@@ -104,5 +120,37 @@ export default class ClassicImageResizeCommand extends Command {
     });
 
     this.refresh();
+  }
+
+  _captureAspectRatio(imageElement) {
+    const width = parseFloat(this.getWidth(imageElement));
+    const height = parseFloat(this.getHeight(imageElement));
+
+    if (width && height) {
+      this._aspectRatio = height / width;
+      return;
+    }
+
+    // Fall back to the natural image dimensions from the DOM.
+    const mapper = this.editor.editing.mapper;
+    const viewElement = mapper.toViewElement(imageElement);
+
+    if (viewElement) {
+      const imgViewElement = [...viewElement.getChildren()].find(
+        (el) => el.name === "img",
+      );
+
+      if (imgViewElement) {
+        const domImg =
+          this.editor.editing.view.domConverter.mapViewToDom(imgViewElement);
+
+        if (domImg && domImg.naturalWidth && domImg.naturalHeight) {
+          this._aspectRatio = domImg.naturalHeight / domImg.naturalWidth;
+          return;
+        }
+      }
+    }
+
+    this._aspectRatio = null;
   }
 }

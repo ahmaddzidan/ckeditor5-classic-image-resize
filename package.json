@@ -16,7 +16,14 @@
     "@ckeditor/ckeditor5-core": "^44.2.1",
     "@ckeditor/ckeditor5-image": "^44.2.1",
     "@ckeditor/ckeditor5-ui": "^44.2.1",
-    "@ckeditor/ckeditor5-utils": "^43.0.1"
+    "@ckeditor/ckeditor5-utils": "^44.2.1"
+  },
+  "devDependencies": {
+    "ckeditor5": "^44.2.1",
+    "vite": "^5.4.0"
+  },
+  "scripts": {
+    "demo:local": "vite --config vite.local.config.js --port 4700 --strictPort"
   },
   "repository": {
     "type": "git",

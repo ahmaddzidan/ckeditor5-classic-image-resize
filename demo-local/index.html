@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CKEditor Local Demo</title>
+    <style>
+      :root {
+        --panel-bg: #ffffff;
+        --panel-border: #d8dee6;
+        --panel-shadow: 0 6px 18px rgba(15, 23, 42, 0.14);
+        --btn-hover: #f1f5f9;
+        --btn-on: #0ea5e9;
+        --input-bg: #ffffff;
+      }
+
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 900px;
+        margin: 24px auto;
+        padding: 0 16px;
+        background: #f5f5f5;
+      }
+      #status {
+        margin-bottom: 12px;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+      #editor-wrap {
+        background: #fff;
+        border: 1px solid #ccc;
+      }
+      #out {
+        margin-top: 16px;
+        background: #1f1f1f;
+        color: #ddd;
+        padding: 12px;
+        font-size: 12px;
+        white-space: pre-wrap;
+      }
+      .ck.ck-input-text.resize {
+        min-width: 58px;
+        width: 58px;
+      }
+
+      /* Modern image balloon toolbar */
+      .ck.ck-balloon-panel {
+        border-radius: 10px;
+        overflow: hidden;
+        border: 0;
+        box-shadow: none;
+      }
+
+      /* Hard override for the exact toolbar balloon variant. */
+      .ck.ck-balloon-panel.ck-toolbar-container,
+      .ck.ck-balloon-panel.ck-balloon-panel_with-arrow.ck-toolbar-container,
+      .ck.ck-balloon-panel.ck-balloon-panel_visible.ck-toolbar-container {
+        --ck-balloon-border-width: 0px;
+        --ck-drop-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+      }
+
+      .ck.ck-balloon-panel::before,
+      .ck.ck-balloon-panel::after {
+        border: 0;
+        box-shadow: none;
+      }
+
+      .ck.ck-balloon-panel.ck-toolbar-container::before,
+      .ck.ck-balloon-panel.ck-toolbar-container::after {
+        display: none !important;
+      }
+
+      .ck.ck-balloon-panel .ck.ck-toolbar {
+        background: var(--panel-bg);
+        border: 1px solid var(--panel-border);
+        box-shadow: var(--panel-shadow);
+        border-radius: 10px;
+        gap: 4px;
+        padding: 4px;
+      }
+
+      .ck.ck-balloon-panel .ck.ck-toolbar .ck-button {
+        min-width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 0;
+        color: #334155;
+      }
+
+      .ck.ck-balloon-panel .ck.ck-toolbar .ck-button:hover,
+      .ck.ck-balloon-panel .ck.ck-toolbar .ck-button:focus {
+        background: var(--btn-hover);
+      }
+
+      .ck.ck-balloon-panel .ck.ck-toolbar .ck-button.ck-on {
+        background: rgba(14, 165, 233, 0.14);
+        color: var(--btn-on);
+      }
+
+      .ck.ck-balloon-panel .ck.ck-toolbar .ck-input-text.resize {
+        background: var(--input-bg);
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        height: 28px;
+        font-weight: 500;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .ck.ck-balloon-panel .ck.ck-toolbar .ck-input-text.resize:focus {
+        border-color: var(--btn-on);
+        box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.14);
+      }
+
+      .ck.ck-balloon-panel .ck-toolbar__separator {
+        background: #dbe3ec;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>CKEditor Local Demo (No CDN)</h2>
+    <div id="status">Initializing...</div>
+    <div id="editor-wrap">
+      <div id="editor">
+        <p>Select image then test width/height/aspect/align.</p>
+        <figure
+          class="image"
+          style="
+            width: 300px;
+            height: 200px;
+            margin-left: auto;
+            margin-right: auto;
+          "
+        >
+          <img
+            src="https://picsum.photos/seed/localdemo/600/400"
+            style="width: 300px; height: 200px"
+            alt="Demo image"
+          />
+        </figure>
+      </div>
+    </div>
+    <pre id="out"></pre>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
