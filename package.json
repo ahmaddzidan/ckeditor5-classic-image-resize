@@ -1,6 +1,6 @@
 {
   "name": "@emagtechlabs/ckeditor5-classic-image-resize",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Classic Image Resize Tool for CKEditor5",
   "main": "src/classicimageresize.js",
   "keywords": [
